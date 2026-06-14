@@ -184,28 +184,3 @@ class AppTheme {
     );
   }
 }
-
-/// Inherited widget that provides the current [ThemeMode] and a toggle callback
-/// accepting a tap position, to any descendant widget.
-class ThemeModeProvider extends InheritedWidget {
-  final ThemeMode themeMode;
-  final ValueChanged<Offset> toggleTheme;
-
-  const ThemeModeProvider({
-    super.key,
-    required this.themeMode,
-    required this.toggleTheme,
-    required super.child,
-  });
-
-  static ThemeModeProvider of(BuildContext context) {
-    final provider = context.dependOnInheritedWidgetOfExactType<ThemeModeProvider>();
-    assert(provider != null, 'No ThemeModeProvider found in context');
-    return provider!;
-  }
-
-  @override
-  bool updateShouldNotify(ThemeModeProvider oldWidget) {
-    return themeMode != oldWidget.themeMode;
-  }
-}

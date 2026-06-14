@@ -2,7 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:badges/badges.dart' as badges;
-import '../theme/app_theme.dart';
+import 'package:go_router/go_router.dart';
+import '../../core/theme/app_theme.dart';
 import '../widgets/glassmorphism_widget.dart';
 
 /// Notifications screen with badge counters and glassmorphism cards.
@@ -266,54 +267,70 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
         child: Icon(Icons.delete_outline, color: AppTheme.textPrimary(context).withValues(alpha: 0.7)),
       ),
-      child: GlassCard(
-        height: 80,
-        borderRadius: 16,
-        blur: 8,
-        borderWidth: notif.isUnread ? 1.0 : 0.5,
-        margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        gradientColors: notif.isUnread
-            ? [
-                AppTheme.primaryColor.withValues(alpha: 0.12),
-                AppTheme.surface(context).withValues(alpha: 0.1),
-              ]
-            : [
-                AppTheme.surface(context).withValues(alpha: 0.2),
-                AppTheme.surface(context).withValues(alpha: 0.05),
-              ],
-        borderGradientColors: notif.isUnread
-            ? [
-                AppTheme.primaryColor.withValues(alpha: 0.4),
-                AppTheme.surface(context).withValues(alpha: 0.3),
-              ]
-            : [
-                AppTheme.textSecondary(context).withValues(alpha: 0.2),
-                AppTheme.textSecondary(context).withValues(alpha: 0.05),
-              ],
-        child: Row(
+      child: GestureDetector(
+        onTap: () {
+          context.push(
+            '/home/notifications/${notif.id}',
+            extra: {
+              'title': notif.title,
+              'subtitle': notif.subtitle,
+              'icon': notif.icon,
+              'color': notif.color,
+              'time': notif.time,
+            },
+          );
+        },
+        child: GlassCard(
+          height: 80,
+          borderRadius: 16,
+          blur: 8,
+          borderWidth: notif.isUnread ? 1.0 : 0.5,
+          margin: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          gradientColors: notif.isUnread
+              ? [
+                  AppTheme.primaryColor.withValues(alpha: 0.12),
+                  AppTheme.surface(context).withValues(alpha: 0.1),
+                ]
+              : [
+                  AppTheme.surface(context).withValues(alpha: 0.2),
+                  AppTheme.surface(context).withValues(alpha: 0.05),
+                ],
+          borderGradientColors: notif.isUnread
+              ? [
+                  AppTheme.primaryColor.withValues(alpha: 0.4),
+                  AppTheme.surface(context).withValues(alpha: 0.3),
+                ]
+              : [
+                  AppTheme.textSecondary(context).withValues(alpha: 0.2),
+                  AppTheme.textSecondary(context).withValues(alpha: 0.05),
+                ],
+          child: Row(
           children: [
             // Icon with glow
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    notif.color.withValues(alpha: 0.3),
-                    notif.color.withValues(alpha: 0.1),
-                  ],
+            Hero(
+              tag: 'notification-icon-${notif.id}',
+              child: Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      notif.color.withValues(alpha: 0.3),
+                      notif.color.withValues(alpha: 0.1),
+                    ],
+                  ),
+                  border: Border.all(
+                    color: notif.color.withValues(alpha: 0.3),
+                    width: 1.5,
+                  ),
                 ),
-                border: Border.all(
-                  color: notif.color.withValues(alpha: 0.3),
-                  width: 1.5,
+                child: Center(
+                  child: Icon(notif.icon, color: notif.color, size: 20),
                 ),
-              ),
-              child: Center(
-                child: Icon(notif.icon, color: notif.color, size: 20),
               ),
             ),
             const SizedBox(width: 12),
@@ -377,7 +394,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           ],
         ),
       ),
-    ).animate().fadeIn(
+    ),
+  ).animate().fadeIn(
           duration: 400.ms,
           delay: (index * 80).ms,
         ).slideX(
