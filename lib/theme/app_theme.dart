@@ -186,10 +186,10 @@ class AppTheme {
 }
 
 /// Inherited widget that provides the current [ThemeMode] and a toggle callback
-/// to any descendant widget.
+/// accepting a tap position, to any descendant widget.
 class ThemeModeProvider extends InheritedWidget {
   final ThemeMode themeMode;
-  final VoidCallback toggleTheme;
+  final ValueChanged<Offset> toggleTheme;
 
   const ThemeModeProvider({
     super.key,

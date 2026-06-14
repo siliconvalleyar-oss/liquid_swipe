@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 /// hole from a given origin point.
 class ThemeTransitionOverlay extends StatefulWidget {
   final Color backgroundColor;
+  final Offset origin;
   final VoidCallback onComplete;
 
   const ThemeTransitionOverlay({
     super.key,
     required this.backgroundColor,
+    required this.origin,
     required this.onComplete,
   });
 
@@ -46,8 +48,6 @@ class _ThemeTransitionOverlayState extends State<ThemeTransitionOverlay>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    // Reveal from top-right (near the theme toggle button)
-    final origin = Offset(size.width, 0);
     final maxRadius = math.sqrt(size.width * size.width + size.height * size.height);
 
     return AnimatedBuilder(
@@ -56,7 +56,7 @@ class _ThemeTransitionOverlayState extends State<ThemeTransitionOverlay>
         return ClipPath(
           clipper: _RadialRevealClipper(
             progress: _controller.value,
-            origin: origin,
+            origin: widget.origin,
             maxRadius: maxRadius,
           ),
           child: child!,

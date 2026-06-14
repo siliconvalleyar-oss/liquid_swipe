@@ -114,35 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Theme toggle button
-                      GestureDetector(
-                        onTap: () => ThemeModeProvider.of(context).toggleTheme(),
-                        child: GlassCard(
-                          width: 40,
-                          height: 40,
-                          borderRadius: 12,
-                          blur: 6,
-                          borderWidth: 1,
-                          padding: const EdgeInsets.all(0),
-                          gradientColors: [
-                            Colors.white.withValues(alpha: 0.1),
-                            Colors.white.withValues(alpha: 0.03),
-                          ],
-                          child: Center(
-                            child: Icon(
-                              ThemeModeProvider.of(context).themeMode ==
-                                      ThemeMode.dark
-                                  ? Icons.light_mode
-                                  : Icons.dark_mode,
-                              color: AppTheme.textPrimary(context),
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ).animate().scale(
-                            duration: 500.ms,
-                            curve: Curves.elasticOut,
-                            delay: 300.ms,
-                          ),
+                      _ThemeToggleButton(),
                       const SizedBox(width: 8),
                       // Avatar with glass effect
                       GlassCard(
@@ -582,6 +554,54 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+}
+
+/// Theme mode icon helper — top-level so it's accessible from any widget.
+IconData _themeModeIcon(ThemeMode mode) {
+  return switch (mode) {
+    ThemeMode.dark => Icons.dark_mode,
+    ThemeMode.light => Icons.light_mode,
+    ThemeMode.system => Icons.settings_brightness,
+  };
+}
+
+/// Toggle button that captures its own tap position for the radial reveal.
+class _ThemeToggleButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    Offset? tapPos;
+    return GestureDetector(
+      onTapDown: (details) => tapPos = details.globalPosition,
+      onTap: () {
+        final pos = tapPos ?? Offset.zero;
+        ThemeModeProvider.of(context).toggleTheme(pos);
+      },
+      child: GlassCard(
+        width: 40,
+        height: 40,
+        borderRadius: 12,
+        blur: 6,
+        borderWidth: 1,
+        padding: const EdgeInsets.all(0),
+        gradientColors: [
+          Colors.white.withValues(alpha: 0.1),
+          Colors.white.withValues(alpha: 0.03),
+        ],
+        child: Center(
+          child: Icon(
+            _themeModeIcon(
+                ThemeModeProvider.of(context).themeMode),
+            color: AppTheme.textPrimary(context),
+            size: 20,
+          ),
+        ),
+      ),
+    ).animate().scale(
+          duration: 500.ms,
+          curve: Curves.elasticOut,
+          delay: 300.ms,
+        );
   }
 }
 
