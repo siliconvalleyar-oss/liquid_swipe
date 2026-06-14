@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 /// A reusable glassmorphism container widget.
@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 /// to create the frosted glass effect.
 class GlassCard extends StatelessWidget {
   final Widget child;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   final double borderRadius;
   final double blur;
   final double borderWidth;
@@ -22,8 +22,8 @@ class GlassCard extends StatelessWidget {
   const GlassCard({
     super.key,
     required this.child,
-    this.width = double.infinity,
-    this.height = 200,
+    this.width,
+    this.height,
     this.borderRadius = 20,
     this.blur = 15,
     this.borderWidth = 1.5,
@@ -65,7 +65,7 @@ class GlassCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius - borderWidth),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+          filter: ui.ImageFilter.blur(sigmaX: blur, sigmaY: blur),
           child: Container(
             width: double.infinity,
             height: double.infinity,
@@ -129,7 +129,7 @@ class GlassButton extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius - 1),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+            filter: ui.ImageFilter.blur(sigmaX: blur, sigmaY: blur),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -95,7 +96,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         page: _currentPage + 1,
                       );
                     } else {
-                      Navigator.of(context).pushReplacementNamed('/home');
+                      context.go('/home');
                     }
                   },
                   child: _currentPage < _pages.length - 1
@@ -111,8 +112,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           label: 'Comenzar',
                           icon: Icons.arrow_forward,
                           onTap: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/home');
+                            context.go('/home');
                           },
                         ),
                 ),

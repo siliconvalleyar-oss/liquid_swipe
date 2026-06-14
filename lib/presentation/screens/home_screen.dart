@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
+import '../providers/theme_provider.dart';
+import '../providers/theme_overlay_provider.dart';
 import '../widgets/glassmorphism_widget.dart';
 import '../widgets/liquid_bar.dart';
 import '../widgets/squad_widget.dart';
@@ -567,15 +570,35 @@ IconData _themeModeIcon(ThemeMode mode) {
 }
 
 /// Toggle button that captures its own tap position for the radial reveal.
-class _ThemeToggleButton extends StatelessWidget {
+class _ThemeToggleButton extends ConsumerWidget {
+  const _ThemeToggleButton();
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Offset? tapPos;
+    final themeMode = ref.watch(themeModeProvider);
+
     return GestureDetector(
       onTapDown: (details) => tapPos = details.globalPosition,
       onTap: () {
-        final pos = tapPos ?? Offset.zero;
-        ThemeModeProvider.of(context).toggleTheme(pos);
+        // Calculate old background before toggling
+        final brightness = themeMode == ThemeMode.dark
+            ? Brightness.dark
+            : themeMode == ThemeMode.light
+                ? Brightness.light
+                : WidgetsBinding.instance.platformDispatcher.platformBrightness;
+        final oldBg = brightness == Brightness.dark
+            ? AppTheme.darkBackground
+            : AppTheme.lightBackground;
+
+        // Toggle theme via Riverpod (also persists)
+        ref.read(themeModeProvider.notifier).toggle();
+
+        // Trigger overlay transition animation
+        ref.read(themeOverlayProvider.notifier).show(ThemeOverlayData(
+          backgroundColor: oldBg,
+          origin: tapPos ?? Offset.zero,
+        ));
       },
       child: GlassCard(
         width: 40,
@@ -590,8 +613,7 @@ class _ThemeToggleButton extends StatelessWidget {
         ],
         child: Center(
           child: Icon(
-            _themeModeIcon(
-                ThemeModeProvider.of(context).themeMode),
+            _themeModeIcon(themeMode),
             color: AppTheme.textPrimary(context),
             size: 20,
           ),

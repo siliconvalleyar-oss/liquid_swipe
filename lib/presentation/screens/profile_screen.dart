@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:glassmorphism/glassmorphism.dart';
-import '../theme/app_theme.dart';
+import 'package:go_router/go_router.dart';
+import '../../core/theme/app_theme.dart';
 import '../widgets/glassmorphism_widget.dart';
 
 /// Profile screen with glassmorphism profile card, skill bars, and
@@ -82,45 +83,48 @@ class _ProfileScreenState extends State<ProfileScreen>
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     children: [
-                      // Avatar
-                      AnimatedBuilder(
-                        animation: _pulseController,
-                        builder: (context, child) {
-                          return Transform.scale(
-                            scale: 1 + _pulseController.value * 0.03,
-                            child: Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFF6C63FF),
-                                    Color(0xFFFF6584),
+                      // Avatar with Hero for shared axis transition
+                      Hero(
+                        tag: 'profile-avatar',
+                        child: AnimatedBuilder(
+                          animation: _pulseController,
+                          builder: (context, child) {
+                            return Transform.scale(
+                              scale: 1 + _pulseController.value * 0.03,
+                              child: Container(
+                                width: 80,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFF6C63FF),
+                                      Color(0xFFFF6584),
+                                    ],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppTheme.primaryColor
+                                          .withValues(alpha: 0.4),
+                                      blurRadius: 20,
+                                      spreadRadius: 2,
+                                    ),
                                   ],
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.primaryColor
-                                        .withValues(alpha: 0.4),
-                                    blurRadius: 20,
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'A',
-                                  style: TextStyle(
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppTheme.textPrimary(context),
+                                child: Center(
+                                  child: Text(
+                                    'A',
+                                    style: TextStyle(
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme.textPrimary(context),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -146,6 +150,52 @@ class _ProfileScreenState extends State<ProfileScreen>
                     begin: -0.2,
                     end: 0,
                     duration: 500.ms,
+                  ),
+
+              // ─── Edit Profile Button ──────────────────────────
+              Center(
+                child: GestureDetector(
+                  onTap: () => context.push('/home/profile/edit'),
+                  child: GlassCard(
+                    width: 160,
+                    height: 42,
+                    borderRadius: 14,
+                    blur: 6,
+                    borderWidth: 1,
+                    padding: const EdgeInsets.all(0),
+                    gradientColors: [
+                      AppTheme.primaryColor.withValues(alpha: 0.25),
+                      AppTheme.secondaryColor.withValues(alpha: 0.1),
+                    ],
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.edit_outlined,
+                            color: AppTheme.textPrimary(context),
+                            size: 16,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Editar Perfil',
+                            style: TextStyle(
+                              color: AppTheme.textPrimary(context),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ).animate().fadeIn(duration: 400.ms, delay: 200.ms).scale(
+                    begin: const Offset(0.9, 0.9),
+                    end: const Offset(1, 1),
+                    duration: 400.ms,
+                    delay: 200.ms,
+                    curve: Curves.easeOutBack,
                   ),
 
               const SizedBox(height: 24),
