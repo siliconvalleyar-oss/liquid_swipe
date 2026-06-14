@@ -66,10 +66,7 @@ class GlassCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius - borderWidth),
         child: BackdropFilter(
           filter: ui.ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            padding: padding ?? const EdgeInsets.all(20),
+          child: DecoratedBox(
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(borderRadius - borderWidth),
@@ -80,7 +77,10 @@ class GlassCard extends StatelessWidget {
                 stops: gradientStops,
               ),
             ),
-            child: child,
+            child: Padding(
+              padding: padding ?? const EdgeInsets.all(20),
+              child: child,
+            ),
           ),
         ),
       ),
