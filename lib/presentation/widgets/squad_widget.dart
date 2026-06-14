@@ -1,4 +1,3 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 /// A "Squad" widget showing a grid of cards with staggered entrance
@@ -194,38 +193,32 @@ class _SquadWidgetState extends State<SquadWidget>
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                _cardIcons[index % _cardIcons.length],
-                color: color,
-                size: 36,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _cardLabels[index % _cardLabels.length],
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.9),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '${(index + 1) * 3} items',
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.5),
-                  fontSize: 11,
-                ),
-              ),
-            ],
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            _cardIcons[index % _cardIcons.length],
+            color: color,
+            size: 36,
           ),
-        ),
+          const SizedBox(height: 8),
+          Text(
+            _cardLabels[index % _cardLabels.length],
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.9),
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${(index + 1) * 3} items',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.5),
+              fontSize: 11,
+            ),
+          ),
+        ],
       ),
     );
   }

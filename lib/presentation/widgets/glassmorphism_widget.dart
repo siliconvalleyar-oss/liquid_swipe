@@ -1,4 +1,3 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 /// A reusable glassmorphism container widget.
@@ -56,33 +55,20 @@ class GlassCard extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
+        border: Border.all(
+          color: bdrColors.first,
+          width: borderWidth,
+        ),
         gradient: LinearGradient(
           begin: begin,
           end: end,
-          colors: bdrColors,
+          colors: bgColors,
+          stops: gradientStops,
         ),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(borderRadius - borderWidth),
-        child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(borderRadius - borderWidth),
-              gradient: LinearGradient(
-                begin: begin,
-                end: end,
-                colors: bgColors,
-                stops: gradientStops,
-              ),
-            ),
-            child: Padding(
-              padding: padding ?? const EdgeInsets.all(20),
-              child: child,
-            ),
-          ),
-        ),
+      child: Padding(
+        padding: padding ?? const EdgeInsets.all(20),
+        child: child,
       ),
     );
   }
@@ -126,28 +112,22 @@ class GlassButton extends StatelessWidget {
             ],
           ),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(borderRadius - 1),
-          child: BackdropFilter(
-            filter: ui.ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (icon != null) ...[
-                  Icon(icon, color: Colors.white, size: 20),
-                  const SizedBox(width: 8),
-                ],
-                Text(
-                  label,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+            ],
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

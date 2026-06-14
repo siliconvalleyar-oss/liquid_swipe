@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
 /// A custom "LiquidGlassBottomBar" - a bottom navigation bar with glassmorphism
@@ -81,17 +80,11 @@ class _LiquidGlassBottomBarState extends State<LiquidGlassBottomBar>
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(widget.items.length, (index) {
-              return _buildTabItem(index);
-            }),
-          ),
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: List.generate(widget.items.length, (index) {
+          return _buildTabItem(index);
+        }),
       ),
     );
   }
