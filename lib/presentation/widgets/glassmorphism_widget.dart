@@ -1,3 +1,4 @@
+import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 
 /// A reusable glassmorphism container widget.
@@ -66,9 +67,24 @@ class GlassCard extends StatelessWidget {
           stops: gradientStops,
         ),
       ),
-      child: Padding(
-        padding: padding ?? const EdgeInsets.all(20),
-        child: child,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(
+          borderRadius - borderWidth / 2,
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+                child: Container(color: Colors.transparent),
+              ),
+            ),
+            Padding(
+              padding: padding ?? const EdgeInsets.all(20),
+              child: child,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -112,22 +128,35 @@ class GlassButton extends StatelessWidget {
             ],
           ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, color: Colors.white, size: 20),
-              const SizedBox(width: 8),
-            ],
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(borderRadius - 1),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+                  child: Container(color: Colors.transparent),
+                ),
               ),
-            ),
-          ],
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (icon != null) ...[
+                    Icon(icon, color: Colors.white, size: 20),
+                    const SizedBox(width: 8),
+                  ],
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 
 /// A "Squad" widget showing a grid of cards with staggered entrance
@@ -173,14 +174,6 @@ class _SquadWidgetState extends State<SquadWidget>
       height: widget.itemHeight,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            color.withValues(alpha: 0.3),
-            color.withValues(alpha: 0.1),
-          ],
-        ),
         border: Border.all(
           color: color.withValues(alpha: 0.3),
           width: 1.5,
@@ -193,32 +186,59 @@ class _SquadWidgetState extends State<SquadWidget>
           ),
         ],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            _cardIcons[index % _cardIcons.length],
-            color: color,
-            size: 36,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            _cardLabels[index % _cardLabels.length],
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.9),
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Frosted glass blur
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(color: Colors.transparent),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${(index + 1) * 3} items',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.5),
-              fontSize: 11,
+            // Gradient tint overlay
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    color.withValues(alpha: 0.3),
+                    color.withValues(alpha: 0.1),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+            // Content
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  _cardIcons[index % _cardIcons.length],
+                  color: color,
+                  size: 36,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  _cardLabels[index % _cardLabels.length],
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${(index + 1) * 3} items',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.5),
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

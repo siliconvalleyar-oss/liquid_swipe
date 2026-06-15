@@ -89,33 +89,29 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(height: 24),
 
                 // Skip / Get Started button
-                GestureDetector(
-                  onTap: () {
-                    if (_currentPage < _pages.length - 1) {
-                      _liquidController.animateToPage(
-                        page: _currentPage + 1,
-                      );
-                    } else {
-                      context.go('/home');
-                    }
-                  },
-                  child: _currentPage < _pages.length - 1
-                      ? Text(
+                // Note: each button handles its own tap independently
+                // to avoid GestureDetector nesting conflicts with LiquidSwipe.
+                _currentPage < _pages.length - 1
+                    ? GestureDetector(
+                        onTap: () {
+                          _liquidController.animateToPage(
+                            page: _currentPage + 1,
+                          );
+                        },
+                        child: Text(
                           'Saltar',
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.6),
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
-                        )
-                      : GlassButton(
-                          label: 'Comenzar',
-                          icon: Icons.arrow_forward,
-                          onTap: () {
-                            context.go('/home');
-                          },
                         ),
-                ),
+                      )
+                    : GlassButton(
+                        label: 'Comenzar',
+                        icon: Icons.arrow_forward,
+                        onTap: () => context.go('/home'),
+                      ),
               ],
             ),
           ),

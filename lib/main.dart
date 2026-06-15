@@ -129,10 +129,18 @@ class _LiquidGlassAppState extends ConsumerState<LiquidGlassApp>
   }
 
   Future<void> _loadPreferences() async {
-    ref.read(themeModeProvider.notifier).loadFromPrefs();
+    try {
+      ref.read(themeModeProvider.notifier).loadFromPrefs();
+    } catch (_) {
+      // If prefs fail, still continue to main app
+    }
     if (!mounted) return;
 
-    await _splashFadeController.forward();
+    // Wait for fade animation (max 3 seconds as safety net)
+    await _splashFadeController.forward().timeout(
+      const Duration(seconds: 3),
+      onTimeout: () => _splashFadeController.value = 1.0,
+    );
     if (!mounted) return;
 
     setState(() {

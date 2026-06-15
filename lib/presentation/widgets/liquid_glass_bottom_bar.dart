@@ -1,3 +1,4 @@
+import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 
 /// A custom "LiquidGlassBottomBar" - a bottom navigation bar with glassmorphism
@@ -64,14 +65,6 @@ class _LiquidGlassBottomBarState extends State<LiquidGlassBottomBar>
           color: Colors.white.withValues(alpha: 0.2),
           width: 1,
         ),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.white.withValues(alpha: 0.12),
-            Colors.white.withValues(alpha: 0.04),
-          ],
-        ),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF6C63FF).withValues(alpha: 0.2),
@@ -80,11 +73,38 @@ class _LiquidGlassBottomBarState extends State<LiquidGlassBottomBar>
           ),
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(widget.items.length, (index) {
-          return _buildTabItem(index);
-        }),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Frosted glass blur
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: Container(color: Colors.transparent),
+            ),
+            // Gradient tint overlay
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.white.withValues(alpha: 0.12),
+                    Colors.white.withValues(alpha: 0.04),
+                  ],
+                ),
+              ),
+            ),
+            // Content
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(widget.items.length, (index) {
+                return _buildTabItem(index);
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }

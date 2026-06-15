@@ -1,6 +1,6 @@
 # 📋 TODO — Liquid Glass App
 
-> **Proyecto:** `liquid_glass_app` · Flutter · v1.0.3
+> **Proyecto:** `liquid_glass_app` · Flutter · v1.0.7
 > Estado actual del proyecto y próximos pasos.
 
 ---
@@ -15,7 +15,7 @@
 
 - [x] Migrar a GoRouter con StatefulShellRoute
 - [x] Agregar rutas anidadas: `/home/profile/edit` y `/home/notifications/:id`
-- [x] Transiciones animadas entre rutas (slide+fade con CustomTransitionPage)
+- [x] Transiciones animadas entre rutas (Hero + SharedAxisTransition)
 - [x] Pantalla de detalle de notificación (NotificationDetailScreen)
 - [x] Pantalla de edición de perfil (ProfileEditScreen)
 - [ ] Deep linking
@@ -181,3 +181,7 @@
 - [x] Widget tests para GlassCard, GlassButton, LiquidBar, SquadWidget
 - [x] Icono de la app generado (SVG + PNG + Android/iOS mipmap)
 - [x] Build e instalación v1.0.3 en dispositivo móvil
+- [x] GlassCard fix: infinite height con DecoratedBox
+- [x] Widget tests para ProfileEditScreen, NotificationDetailScreen, ShellScreen/LiquidGlassBottomBar (27 tests)
+- [x] PR #1 mergeado a main
+- [x] Rama feature/v1.0.4-navegacion-goRouter eliminada (local + remota)
